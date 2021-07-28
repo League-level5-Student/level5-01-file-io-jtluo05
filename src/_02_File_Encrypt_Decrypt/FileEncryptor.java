@@ -29,17 +29,29 @@ public class FileEncryptor {
 	 */
 	public static void main(String[] args) {
 		String s=JOptionPane.showInputDialog("Input your message here.");
-		int key=8;
+		int key=4;
 		int f=0;
-		char newS = 10;
-		for(int i=0;i>s.length();i++) {
+		String newS = "";
+		for(int i=0;i<s.length();i++) {
 			f+=(int)s.charAt(i)+key;
-			if(f>28) {
-				f=f-26;
+			if (!Character.isLetter(s.charAt(i))) {
+				newS += s.charAt(i);
+
+			}
+			if (Character.isLetter(s.charAt(i))) {
+			if(f< (int) 'A') {
+				f+=(int)'A'+key-1;
+				System.out.println(f);
+
+				
 			}
 			newS+=(char)f;
-		}
-
+			}
+			f=0;	
+			}
+			
+		
+		System.out.println(newS);
 		try {
 			FileWriter fr=new FileWriter(new File("file.txt"));
 			fr.write(newS);
