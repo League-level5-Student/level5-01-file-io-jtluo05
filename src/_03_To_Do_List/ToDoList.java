@@ -3,15 +3,20 @@ package _03_To_Do_List;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 public class ToDoList implements ActionListener {
 	/*
@@ -41,8 +46,11 @@ public class ToDoList implements ActionListener {
 	JButton button3=new JButton("Remove Tasks");
 	JButton button4=new JButton("Save List");
 	JButton button5=new JButton("Load List");
+
+	ArrayList<String> arr=new ArrayList<String>();
 	
-	
+	JFileChooser jfc = new JFileChooser();
+
 	public static void main(String[] args) {
 		ToDoList tdl=new ToDoList();
 		tdl.start();
@@ -61,38 +69,62 @@ public class ToDoList implements ActionListener {
 		button4.addActionListener(this);
 		button5.addActionListener(this);
 		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		ArrayList<String> arr=new ArrayList<String>();
 		if (e.getSource()==button1) {
 			String answer=JOptionPane.showInputDialog("Input task here");
 arr.add(answer);
 		}
-		if (e.getSource()==button2) {
-			for(int i=0;i<arr.size();i++) {
-				System.out.println(arr.get(i));	
-			}
-			
+		else	if (e.getSource()==button2) {
+				System.out.println(arr);	
 		}
-		if (e.getSource()==button3) {
+		else if (e.getSource()==button3) {
 			String remove=JOptionPane.showInputDialog("Which task would you like to remove?");
 			for(int i=0;i<arr.size();i++) {
-			if (arr.get(i).equals(remove)) {
+			 if (arr.get(i).equals(remove)) {
 				arr.remove(i);
 			}
 			}
 		}
-		if (e.getSource()==button4) {
+		else if (e.getSource()==button4) {
 			try {
 				FileWriter fw = new FileWriter("file.txt");
-				fw.write("arr");
-					
+				for(int i=0; i<arr.size();i++) {
+					fw.write(arr.get(i)+"\n");
+				}
 				fw.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
+		else if(e.getSource()==button5) {
+			String a=JOptionPane.showInputDialog("What file would you like to access?");
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(a));
+				
+				arr.clear();
+			
+				String line = br.readLine();
+				while(line != null){
+					arr.add(line);
+					System.out.println(line);
+					line = br.readLine();
+					
+				}
+				
+				br.close();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			
+			}
+		}
 	}
-}
+
