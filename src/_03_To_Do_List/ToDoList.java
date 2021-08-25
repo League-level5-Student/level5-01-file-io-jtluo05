@@ -127,4 +127,3 @@ arr.add(answer);
 			}
 		}
 	}
-
